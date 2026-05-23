@@ -17,14 +17,15 @@ let db = null
 
 // Initialize database
 export function initDatabase() {
-  const dbPath = process.env.DATABASE_PATH || path.join(__dirname, '../../data/checkcut.db')
-  const dbDir = path.dirname(dbPath)
+  try {
+    const dbPath = process.env.DATABASE_PATH || path.join(__dirname, '../../data/checkcut.db')
+    const dbDir = path.dirname(dbPath)
 
-  if (!fs.existsSync(dbDir)) {
-    fs.mkdirSync(dbDir, { recursive: true })
-  }
+    if (!fs.existsSync(dbDir)) {
+      fs.mkdirSync(dbDir, { recursive: true })
+    }
 
-  db = new Database(dbPath)
+    db = new Database(dbPath)
 
   db.exec(`
     CREATE TABLE IF NOT EXISTS users (
@@ -134,8 +135,123 @@ export function initDatabase() {
     CREATE INDEX IF NOT EXISTS idx_videos_status ON videos(status);
   `)
 
-  console.log('[DATABASE] Initialized:', dbPath)
-  return db
+    console.log('[DATABASE] Initialized:', dbPath)
+    return db
+  } catch (error) {
+    console.error('[DATABASE] Initialization failed:', error.message)
+    console.error('[DATABASE] Running in memory-only mode')
+    // Fallback to in-memory database
+    db = new Database(':memory:')
+    db.exec(`
+      CREATE TABLE IF NOT EXISTS users (
+        id TEXT PRIMARY KEY,
+        username TEXT UNIQUE NOT NULL,
+        password_hash TEXT NOT NULL,
+        created_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+        updated_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now'))
+      );
+
+      CREATE TABLE IF NOT EXISTS settings (
+        user_id TEXT NOT NULL,
+        key TEXT NOT NULL,
+        value TEXT,
+        PRIMARY KEY (user_id, key),
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+      );
+
+      CREATE TABLE IF NOT EXISTS history (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        video_id TEXT NOT NULL,
+        title TEXT,
+        author TEXT,
+        author_id TEXT,
+        length_seconds INTEGER,
+        watch_progress INTEGER DEFAULT 0,
+        watched_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_history_user ON history(user_id);
+      CREATE INDEX IF NOT EXISTS idx_history_video ON history(user_id, video_id);
+
+      CREATE TABLE IF NOT EXISTS favorites (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        video_id TEXT NOT NULL,
+        title TEXT,
+        author TEXT,
+        author_id TEXT,
+        length_seconds INTEGER,
+        added_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+        UNIQUE(user_id, video_id),
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_favorites_user ON favorites(user_id);
+
+      CREATE TABLE IF NOT EXISTS playlists (
+        id TEXT PRIMARY KEY,
+        user_id TEXT NOT NULL,
+        name TEXT NOT NULL,
+        description TEXT,
+        created_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+        updated_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+        FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+      );
+
+      CREATE TABLE IF NOT EXISTS playlist_items (
+        id TEXT PRIMARY KEY,
+        playlist_id TEXT NOT NULL,
+        video_id TEXT NOT NULL,
+        title TEXT,
+        author TEXT,
+        author_id TEXT,
+        length_seconds INTEGER,
+        position INTEGER NOT NULL DEFAULT 0,
+        added_at INTEGER NOT NULL DEFAULT (strftime('%s', 'now')),
+        FOREIGN KEY (playlist_id) REFERENCES playlists(id) ON DELETE CASCADE
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_playlist_items ON playlist_items(playlist_id);
+
+      CREATE TABLE IF NOT EXISTS persons (
+        id TEXT PRIMARY KEY,
+        name TEXT NOT NULL,
+        slug TEXT NOT NULL UNIQUE,
+        avatar TEXT DEFAULT '',
+        bio TEXT DEFAULT '',
+        seedblog_author_id TEXT DEFAULT '',
+        created_at TEXT DEFAULT (datetime('now'))
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_persons_slug ON persons(slug);
+
+      CREATE TABLE IF NOT EXISTS videos (
+        id TEXT PRIMARY KEY,
+        title TEXT NOT NULL,
+        description TEXT DEFAULT '',
+        pokkit_url TEXT NOT NULL,
+        thumbnail_url TEXT DEFAULT '',
+        duration INTEGER DEFAULT 0,
+        person_id TEXT REFERENCES persons(id),
+        category TEXT DEFAULT '',
+        tags TEXT DEFAULT '[]',
+        source_url TEXT DEFAULT '',
+        view_count INTEGER DEFAULT 0,
+        status TEXT DEFAULT 'published',
+        sort_order INTEGER DEFAULT 0,
+        created_at TEXT DEFAULT (datetime('now')),
+        updated_at TEXT DEFAULT (datetime('now'))
+      );
+
+      CREATE INDEX IF NOT EXISTS idx_videos_person ON videos(person_id);
+      CREATE INDEX IF NOT EXISTS idx_videos_category ON videos(category);
+      CREATE INDEX IF NOT EXISTS idx_videos_status ON videos(status);
+    `)
+    console.log('[DATABASE] In-memory database initialized')
+    return db
+  }
 }
 
 export function getDatabase() {

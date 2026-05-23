@@ -10,7 +10,6 @@
     "dev:server": "node server/index.js",
     "build": "cd client && npm install && npm run build",
     "postinstall": "cd client && npm install && npm run build",
-    "prestart": "cd client && npm install && npm run build",
     "start": "NODE_ENV=production node server/index.js",
     "seed": "node server/scripts/seed.js",
     "seed:force": "node server/scripts/seed.js --force",
