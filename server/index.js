@@ -75,11 +75,23 @@ app.use('/api/favorites', favoritesRoutes)
 // Serve static files in production
 if (process.env.NODE_ENV === 'production') {
   const clientDist = path.join(__dirname, '../client/dist')
-  app.use(express.static(clientDist))
+  const fs = await import('fs')
 
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(clientDist, 'index.html'))
-  })
+  if (fs.existsSync(clientDist)) {
+    app.use(express.static(clientDist))
+
+    app.get('*', (req, res) => {
+      res.sendFile(path.join(clientDist, 'index.html'))
+    })
+  } else {
+    console.warn('[WARN] Client dist not found, running in API-only mode')
+    app.get('*', (req, res) => {
+      res.status(503).json({
+        error: 'Client not built',
+        message: 'Run npm run build to build the client'
+      })
+    })
+  }
 }
 
 // Error handling middleware
