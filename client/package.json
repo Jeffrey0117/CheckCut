@@ -14,19 +14,18 @@
     "@fortawesome/free-regular-svg-icons": "^7.1.0",
     "@fortawesome/free-solid-svg-icons": "^7.1.0",
     "@fortawesome/vue-fontawesome": "^3.1.2",
+    "@tailwindcss/postcss": "^4.1.18",
+    "@vitejs/plugin-vue": "^5.2.1",
+    "autoprefixer": "^10.4.23",
     "marked": "^17.0.1",
+    "postcss": "^8.5.6",
+    "sass": "^1.97.1",
     "shaka-player": "^4.16.13",
+    "tailwindcss": "^4.1.18",
+    "vite": "^6.0.7",
     "vue": "^3.5.26",
     "vue-router": "^4.6.4",
     "vuex": "^4.1.0"
   },
-  "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.18",
-    "@vitejs/plugin-vue": "^5.2.1",
-    "autoprefixer": "^10.4.23",
-    "postcss": "^8.5.6",
-    "sass": "^1.97.1",
-    "tailwindcss": "^4.1.18",
-    "vite": "^6.0.7"
-  }
+  "devDependencies": {}
 }
