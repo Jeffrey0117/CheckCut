@@ -6,15 +6,16 @@
  * `status` flips from "processing" to "ready".
  *
  * Env:
- *   POKKIT_URL      Base URL of the Pokkit server (e.g. https://pokkit.example.com)
- *   POKKIT_API_KEY  Bearer token accepted by Pokkit's requireAuth
+ *   POKKIT_URL / POKKIT_BASE_URL  Base URL of the Pokkit server (e.g. https://pokkit.example.com)
+ *   POKKIT_API_KEY                Bearer token accepted by Pokkit's requireAuth
  */
 
 function getPokkitConfig() {
-  const baseUrl = (process.env.POKKIT_URL || '').replace(/\/$/, '')
+  // Accept either POKKIT_URL or the project's existing POKKIT_BASE_URL convention.
+  const baseUrl = (process.env.POKKIT_URL || process.env.POKKIT_BASE_URL || '').replace(/\/$/, '')
   const apiKey = process.env.POKKIT_API_KEY || ''
   if (!baseUrl) {
-    throw new Error('POKKIT_URL is not configured')
+    throw new Error('POKKIT_URL / POKKIT_BASE_URL is not configured')
   }
   if (!apiKey) {
     throw new Error('POKKIT_API_KEY is not configured')

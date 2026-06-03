@@ -7,6 +7,7 @@ const realFetch = globalThis.fetch
 afterEach(() => {
   globalThis.fetch = realFetch
   delete process.env.POKKIT_URL
+  delete process.env.POKKIT_BASE_URL
   delete process.env.POKKIT_API_KEY
 })
 
@@ -17,10 +18,11 @@ function setEnv() {
 
 test('uploadToPokkit: throws when env not configured', async () => {
   delete process.env.POKKIT_URL
+  delete process.env.POKKIT_BASE_URL
   delete process.env.POKKIT_API_KEY
   await assert.rejects(
     () => uploadToPokkit(Buffer.from('x'), 'a.mp4', 'video/mp4'),
-    /POKKIT_URL is not configured/,
+    /is not configured/,
   )
 })
 
