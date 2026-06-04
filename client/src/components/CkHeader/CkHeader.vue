@@ -12,8 +12,9 @@
       </button>
 
       <!-- Brand -->
-      <router-link to="/" class="brand text-lg font-bold flex-shrink-0">
-        雀可<span class="brand-accent">影片</span>
+      <router-link to="/" class="brand flex items-baseline gap-2 flex-shrink-0">
+        <span class="brand-main">Check<span class="brand-accent">Cut</span></span>
+        <span class="brand-sub">雀可影片</span>
       </router-link>
 
       <!-- Search -->
@@ -137,10 +138,28 @@ async function handleLogout() {
 
 .brand {
   color: var(--primary-text-color);
+  text-decoration: none;
+}
+
+.brand-main {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .brand-accent {
   color: var(--primary-color);
+}
+
+.brand-sub {
+  font-size: 0.7rem;
+  font-weight: 500;
+  color: var(--tertiary-text-color);
+  letter-spacing: 0.04em;
+}
+
+@media (max-width: 640px) {
+  .brand-sub { display: none; }
 }
 
 .icon-btn {
