@@ -1,10 +1,10 @@
 <template>
   <router-link
     :to="`/watch/${video.id}`"
-    class="group block rounded-lg overflow-hidden bg-gray-800 hover:bg-gray-750 transition-colors"
+    class="video-card group block rounded-lg overflow-hidden transition-colors"
   >
     <!-- Thumbnail -->
-    <div class="relative aspect-video bg-gray-700">
+    <div class="thumb relative aspect-video">
       <img
         v-if="video.thumbnail_url"
         :src="video.thumbnail_url"
@@ -14,7 +14,7 @@
       >
       <div
         v-if="video.duration"
-        class="absolute bottom-1.5 right-1.5 px-1.5 py-0.5 bg-black/80 text-white text-xs rounded"
+        class="duration-badge absolute bottom-1.5 right-1.5 px-1.5 py-0.5 text-xs rounded"
       >
         {{ formatDuration(video.duration) }}
       </div>
@@ -22,10 +22,10 @@
 
     <!-- Info -->
     <div class="p-3">
-      <h3 class="text-sm font-medium line-clamp-2 group-hover:text-blue-400 transition-colors">
+      <h3 class="title text-sm font-medium line-clamp-2 transition-colors">
         {{ video.title }}
       </h3>
-      <p v-if="video.person_name" class="mt-1 text-xs text-gray-400 truncate">
+      <p v-if="video.person_name" class="meta mt-1 text-xs truncate">
         {{ video.person_name }}
       </p>
     </div>
@@ -47,3 +47,34 @@ function formatDuration(seconds) {
   return `${m}:${s.toString().padStart(2, '0')}`
 }
 </script>
+
+<style scoped>
+.video-card {
+  background: var(--card-bg-color);
+}
+
+.video-card:hover {
+  background: var(--yt-bg-hover);
+}
+
+.thumb {
+  background: var(--secondary-card-bg-color);
+}
+
+.duration-badge {
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+}
+
+.title {
+  color: var(--primary-text-color);
+}
+
+.video-card:hover .title {
+  color: var(--primary-color);
+}
+
+.meta {
+  color: var(--secondary-text-color);
+}
+</style>

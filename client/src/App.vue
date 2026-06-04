@@ -27,6 +27,7 @@ import { useRoute } from 'vue-router'
 import { useStore } from 'vuex'
 import CkHeader from './components/CkHeader/CkHeader.vue'
 import CkSidebar from './components/CkSidebar/CkSidebar.vue'
+import { applyTheme } from './store/modules/settings.js'
 
 const route = useRoute()
 const store = useStore()
@@ -41,8 +42,9 @@ onMounted(async () => {
 })
 
 function updateTheme() {
-  const baseTheme = store.getters.getBaseTheme || 'dark'
-  document.body.className = baseTheme
+  // Default LIGHT for first-time / no-saved-preference visitors.
+  const baseTheme = store.getters.getBaseTheme || 'light'
+  applyTheme(baseTheme, store.getters.getMainColor, store.getters.getSecColor)
 }
 
 watch(() => route.path, () => {

@@ -1,9 +1,9 @@
 <template>
-  <div class="min-h-screen bg-gray-950 text-white">
+  <div class="min-h-screen page-root">
     <div class="max-w-7xl mx-auto px-4 py-8">
       <h1 class="text-2xl font-bold mb-6">Favorites</h1>
 
-      <div v-if="favorites.length === 0" class="text-center py-12 text-gray-400">
+      <div v-if="favorites.length === 0" class="text-center py-12 meta-text">
         No favorites yet. Start watching and add videos to your favorites.
       </div>
 
@@ -33,3 +33,14 @@ import VideoCard from '../../components/VideoCard/VideoCard.vue'
 const store = useStore()
 const favorites = computed(() => store.getters['favorites/getFavorites'] || [])
 </script>
+
+<style scoped>
+.page-root {
+  background-color: var(--bg-color);
+  color: var(--primary-text-color);
+}
+
+.meta-text {
+  color: var(--tertiary-text-color);
+}
+</style>

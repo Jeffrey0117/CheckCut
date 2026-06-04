@@ -1,10 +1,10 @@
 <template>
-  <div class="min-h-screen bg-gray-950 text-white">
+  <div class="min-h-screen page-root">
     <div v-if="loading" class="flex justify-center py-24">
-      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-white"></div>
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 spinner"></div>
     </div>
 
-    <div v-else-if="!person" class="text-center py-24 text-gray-400">
+    <div v-else-if="!person" class="text-center py-24 meta-text">
       Person not found.
     </div>
 
@@ -14,17 +14,17 @@
         <img
           :src="person.avatar_url || '/placeholder-avatar.png'"
           :alt="person.name"
-          class="w-24 h-24 rounded-full object-cover bg-gray-800"
+          class="w-24 h-24 rounded-full object-cover avatar-bg"
         >
         <div>
           <h1 class="text-2xl font-bold">{{ person.name }}</h1>
-          <p v-if="person.bio" class="mt-2 text-gray-300">{{ person.bio }}</p>
+          <p v-if="person.bio" class="mt-2 secondary-text">{{ person.bio }}</p>
         </div>
       </div>
 
       <!-- Person's Videos -->
       <h2 class="text-xl font-semibold mb-4">Videos</h2>
-      <div v-if="videos.length === 0" class="text-gray-400">
+      <div v-if="videos.length === 0" class="meta-text">
         No videos yet.
       </div>
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -40,17 +40,17 @@
             :href="`${seedblogBaseUrl}/author/${person.seedblog_author_id}`"
             target="_blank"
             rel="noopener noreferrer"
-            class="text-sm text-blue-400 hover:text-blue-300"
+            class="text-sm accent-link"
           >
             View all &rarr;
           </a>
         </div>
 
         <div v-if="articlesLoading" class="flex justify-center py-8">
-          <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-blue-400"></div>
+          <div class="animate-spin rounded-full h-6 w-6 border-b-2 spinner"></div>
         </div>
 
-        <div v-else-if="articles.length === 0" class="text-gray-400">
+        <div v-else-if="articles.length === 0" class="meta-text">
           No articles published yet.
         </div>
 
@@ -61,16 +61,16 @@
             :href="articleUrl(article)"
             target="_blank"
             rel="noopener noreferrer"
-            class="group block rounded-lg bg-gray-900 border border-gray-800 p-4 hover:border-gray-600 transition-colors"
+            class="article-card group block rounded-lg p-4 transition-colors"
           >
-            <h3 class="font-medium text-white group-hover:text-blue-400 transition-colors line-clamp-2">
+            <h3 class="article-title font-medium transition-colors line-clamp-2">
               {{ article.title }}
             </h3>
-            <p v-if="article.excerpt" class="mt-2 text-sm text-gray-400 line-clamp-2">
+            <p v-if="article.excerpt" class="mt-2 text-sm meta-text line-clamp-2">
               {{ article.excerpt }}
             </p>
-            <div class="mt-3 flex items-center gap-3 text-xs text-gray-500">
-              <span v-if="article.category" class="bg-gray-800 px-2 py-0.5 rounded">{{ article.category }}</span>
+            <div class="mt-3 flex items-center gap-3 text-xs tertiary-text">
+              <span v-if="article.category" class="chip px-2 py-0.5 rounded">{{ article.category }}</span>
               <span v-if="article.published_at">{{ formatDate(article.published_at) }}</span>
             </div>
           </a>
@@ -154,3 +154,59 @@ watch(() => route.params.slug, (newSlug) => {
   if (newSlug) loadPerson(newSlug)
 })
 </script>
+
+<style scoped>
+.page-root {
+  background-color: var(--bg-color);
+  color: var(--primary-text-color);
+}
+
+.spinner {
+  border-color: var(--primary-color);
+}
+
+.secondary-text {
+  color: var(--secondary-text-color);
+}
+
+.meta-text {
+  color: var(--secondary-text-color);
+}
+
+.tertiary-text {
+  color: var(--tertiary-text-color);
+}
+
+.avatar-bg {
+  background-color: var(--secondary-card-bg-color);
+}
+
+.accent-link {
+  color: var(--primary-color);
+}
+
+.accent-link:hover {
+  color: var(--primary-color-hover);
+}
+
+.article-card {
+  background-color: var(--card-bg-color);
+  border: 1px solid color-mix(in srgb, var(--primary-text-color) 12%, transparent);
+}
+
+.article-card:hover {
+  border-color: color-mix(in srgb, var(--primary-color) 50%, transparent);
+}
+
+.article-title {
+  color: var(--primary-text-color);
+}
+
+.article-card:hover .article-title {
+  color: var(--primary-color);
+}
+
+.chip {
+  background-color: var(--secondary-card-bg-color);
+}
+</style>

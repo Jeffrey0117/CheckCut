@@ -1,5 +1,5 @@
 <template>
-  <div class="min-h-screen bg-gray-950 text-white">
+  <div class="min-h-screen page-root">
     <div class="max-w-7xl mx-auto px-4 py-8">
       <!-- Search Input -->
       <div class="mb-8">
@@ -7,16 +7,16 @@
           v-model="query"
           type="text"
           placeholder="Search videos..."
-          class="w-full max-w-xl px-4 py-3 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          class="themed-input w-full max-w-xl px-4 py-3 rounded-lg focus:outline-none"
           @keydown.enter="doSearch"
         >
       </div>
 
       <div v-if="loading" class="flex justify-center py-12">
-        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 spinner"></div>
       </div>
 
-      <div v-else-if="searched && results.length === 0" class="text-center py-12 text-gray-400">
+      <div v-else-if="searched && results.length === 0" class="text-center py-12 meta-text">
         No results found.
       </div>
 
@@ -73,3 +73,33 @@ watch(() => route.query.q, (newQ) => {
   }
 })
 </script>
+
+<style scoped>
+.page-root {
+  background-color: var(--bg-color);
+  color: var(--primary-text-color);
+}
+
+.spinner {
+  border-color: var(--primary-color);
+}
+
+.meta-text {
+  color: var(--tertiary-text-color);
+}
+
+.themed-input {
+  background-color: var(--search-bar-color);
+  color: var(--primary-text-color);
+  border: 1px solid color-mix(in srgb, var(--primary-text-color) 12%, transparent);
+}
+
+.themed-input::placeholder {
+  color: var(--tertiary-text-color);
+}
+
+.themed-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px var(--primary-color);
+}
+</style>

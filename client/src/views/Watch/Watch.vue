@@ -1,10 +1,10 @@
 <template>
-  <div class="min-h-screen bg-gray-950 text-white">
+  <div class="min-h-screen page-root">
     <div v-if="loading" class="flex justify-center py-24">
-      <div class="animate-spin rounded-full h-10 w-10 border-b-2 border-white"></div>
+      <div class="animate-spin rounded-full h-10 w-10 border-b-2 spinner"></div>
     </div>
 
-    <div v-else-if="!video" class="text-center py-24 text-gray-400">
+    <div v-else-if="!video" class="text-center py-24 meta-text">
       Video not found.
     </div>
 
@@ -40,13 +40,13 @@
                 <img
                   :src="video.person.avatar_url || '/placeholder-avatar.png'"
                   :alt="video.person.name"
-                  class="w-10 h-10 rounded-full object-cover bg-gray-800"
+                  class="w-10 h-10 rounded-full object-cover avatar-bg"
                 >
                 <span class="font-medium">{{ video.person.name }}</span>
               </router-link>
               <button
                 class="px-4 py-2 rounded-lg transition-colors"
-                :class="isFav ? 'bg-red-600 hover:bg-red-700' : 'bg-gray-800 hover:bg-gray-700'"
+                :class="isFav ? 'fav-btn-active' : 'fav-btn'"
                 @click="toggleFav"
               >
                 {{ isFav ? 'Unfavorite' : 'Favorite' }}
@@ -54,7 +54,7 @@
             </div>
             <p
               v-if="video.description"
-              class="mt-4 text-gray-300 whitespace-pre-wrap text-sm"
+              class="mt-4 secondary-text whitespace-pre-wrap text-sm"
             >
               {{ video.description }}
             </p>
@@ -69,17 +69,17 @@
               v-for="rv in relatedVideos"
               :key="rv.id"
               :to="`/watch/${rv.id}`"
-              class="flex gap-3 hover:bg-gray-800 rounded-lg p-2 transition-colors"
+              class="related-item flex gap-3 rounded-lg p-2 transition-colors"
             >
               <img
                 :src="rv.thumbnail_url || '/placeholder-thumb.png'"
                 :alt="rv.title"
-                class="w-40 h-24 object-cover rounded bg-gray-800 flex-shrink-0"
+                class="w-40 h-24 object-cover rounded avatar-bg flex-shrink-0"
               >
               <div class="min-w-0">
                 <p class="text-sm font-medium line-clamp-2">{{ rv.title }}</p>
-                <p class="text-xs text-gray-400 mt-1">{{ rv.person_name }}</p>
-                <p v-if="rv.duration" class="text-xs text-gray-500">{{ formatDuration(rv.duration) }}</p>
+                <p class="text-xs secondary-text mt-1">{{ rv.person_name }}</p>
+                <p v-if="rv.duration" class="text-xs tertiary-text">{{ formatDuration(rv.duration) }}</p>
               </div>
             </router-link>
           </div>
@@ -163,3 +163,49 @@ watch(() => route.params.id, (newId) => {
   if (newId) loadVideo(newId)
 })
 </script>
+
+<style scoped>
+.page-root {
+  background-color: var(--bg-color);
+  color: var(--primary-text-color);
+}
+
+.spinner {
+  border-color: var(--primary-color);
+}
+
+.secondary-text {
+  color: var(--secondary-text-color);
+}
+
+.tertiary-text,
+.meta-text {
+  color: var(--tertiary-text-color);
+}
+
+.avatar-bg {
+  background-color: var(--secondary-card-bg-color);
+}
+
+.related-item:hover {
+  background-color: var(--secondary-card-bg-color);
+}
+
+.fav-btn {
+  background-color: var(--card-bg-color);
+  color: var(--primary-text-color);
+}
+
+.fav-btn:hover {
+  background-color: var(--secondary-card-bg-color);
+}
+
+.fav-btn-active {
+  background-color: var(--primary-color);
+  color: var(--text-with-main-color);
+}
+
+.fav-btn-active:hover {
+  background-color: var(--primary-color-hover);
+}
+</style>

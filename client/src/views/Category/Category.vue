@@ -1,13 +1,13 @@
 <template>
-  <div class="min-h-screen bg-gray-950 text-white">
+  <div class="min-h-screen page-root">
     <div class="max-w-7xl mx-auto px-4 py-8">
       <h1 class="text-2xl font-bold mb-6">{{ categoryName }}</h1>
 
       <div v-if="loading" class="flex justify-center py-12">
-        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 spinner"></div>
       </div>
 
-      <div v-else-if="videos.length === 0" class="text-center py-12 text-gray-400">
+      <div v-else-if="videos.length === 0" class="text-center py-12 meta-text">
         No videos in this category.
       </div>
 
@@ -48,3 +48,18 @@ watch(() => route.params.name, (newName) => {
   if (newName) loadCategory(newName)
 })
 </script>
+
+<style scoped>
+.page-root {
+  background-color: var(--bg-color);
+  color: var(--primary-text-color);
+}
+
+.spinner {
+  border-color: var(--primary-color);
+}
+
+.meta-text {
+  color: var(--tertiary-text-color);
+}
+</style>

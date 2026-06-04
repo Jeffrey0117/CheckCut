@@ -1,21 +1,21 @@
 <template>
-  <div class="min-h-screen bg-gray-950 text-white">
+  <div class="min-h-screen page-root">
     <div class="max-w-6xl mx-auto px-4 py-8">
       <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-bold">Manage Persons</h1>
         <router-link
           to="/admin/persons/new"
-          class="px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 transition-colors"
+          class="primary-btn px-4 py-2 rounded-lg transition-colors"
         >
           + New Person
         </router-link>
       </div>
 
       <div v-if="loading" class="flex justify-center py-12">
-        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 spinner"></div>
       </div>
 
-      <div v-else-if="persons.length === 0" class="text-center py-12 text-gray-400">
+      <div v-else-if="persons.length === 0" class="text-center py-12 meta-text">
         No persons yet.
       </div>
 
@@ -23,26 +23,26 @@
         <div
           v-for="person in persons"
           :key="person.id"
-          class="flex items-center gap-4 p-4 rounded-lg bg-gray-800"
+          class="row-card flex items-center gap-4 p-4 rounded-lg"
         >
           <img
             :src="person.avatar_url || '/placeholder-avatar.png'"
             :alt="person.name"
-            class="w-12 h-12 rounded-full object-cover bg-gray-700 flex-shrink-0"
+            class="w-12 h-12 rounded-full object-cover avatar-bg flex-shrink-0"
           >
           <div class="flex-1 min-w-0">
             <p class="font-medium">{{ person.name }}</p>
-            <p class="text-sm text-gray-400">{{ person.slug }}</p>
+            <p class="text-sm meta-text">{{ person.slug }}</p>
           </div>
           <div class="flex gap-2 flex-shrink-0">
             <router-link
               :to="`/admin/persons/${person.id}`"
-              class="px-3 py-1.5 text-sm rounded bg-gray-700 hover:bg-gray-600 transition-colors"
+              class="neutral-btn px-3 py-1.5 text-sm rounded transition-colors"
             >
               Edit
             </router-link>
             <button
-              class="px-3 py-1.5 text-sm rounded bg-red-700 hover:bg-red-600 transition-colors"
+              class="danger-btn px-3 py-1.5 text-sm rounded transition-colors"
               @click="handleDelete(person.id)"
             >
               Delete
@@ -85,3 +85,54 @@ async function handleDelete(id) {
 
 onMounted(load)
 </script>
+
+<style scoped>
+.page-root {
+  background-color: var(--bg-color);
+  color: var(--primary-text-color);
+}
+
+.spinner {
+  border-color: var(--primary-color);
+}
+
+.meta-text {
+  color: var(--secondary-text-color);
+}
+
+.row-card {
+  background-color: var(--card-bg-color);
+  border: 1px solid color-mix(in srgb, var(--primary-text-color) 12%, transparent);
+}
+
+.avatar-bg {
+  background-color: var(--secondary-card-bg-color);
+}
+
+.primary-btn {
+  background-color: var(--primary-color);
+  color: var(--text-with-main-color);
+}
+
+.primary-btn:hover {
+  background-color: var(--primary-color-hover);
+}
+
+.neutral-btn {
+  background-color: var(--secondary-card-bg-color);
+  color: var(--primary-text-color);
+}
+
+.neutral-btn:hover {
+  background-color: color-mix(in srgb, var(--primary-text-color) 12%, var(--secondary-card-bg-color));
+}
+
+.danger-btn {
+  background-color: var(--destructive-color);
+  color: var(--destructive-text-color);
+}
+
+.danger-btn:hover {
+  background-color: var(--destructive-hover-color);
+}
+</style>

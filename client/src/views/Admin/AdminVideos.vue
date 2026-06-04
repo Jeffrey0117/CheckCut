@@ -1,21 +1,21 @@
 <template>
-  <div class="min-h-screen bg-gray-950 text-white">
+  <div class="min-h-screen page-root">
     <div class="max-w-6xl mx-auto px-4 py-8">
       <div class="flex items-center justify-between mb-6">
         <h1 class="text-2xl font-bold">Manage Videos</h1>
         <router-link
           to="/admin/videos/new"
-          class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-700 transition-colors"
+          class="primary-btn px-4 py-2 rounded-lg transition-colors"
         >
           + New Video
         </router-link>
       </div>
 
       <div v-if="loading" class="flex justify-center py-12">
-        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-white"></div>
+        <div class="animate-spin rounded-full h-8 w-8 border-b-2 spinner"></div>
       </div>
 
-      <div v-else-if="videos.length === 0" class="text-center py-12 text-gray-400">
+      <div v-else-if="videos.length === 0" class="text-center py-12 meta-text">
         No videos yet. Create your first video.
       </div>
 
@@ -23,26 +23,26 @@
         <div
           v-for="video in videos"
           :key="video.id"
-          class="flex items-center gap-4 p-4 rounded-lg bg-gray-800"
+          class="row-card flex items-center gap-4 p-4 rounded-lg"
         >
           <img
             :src="video.thumbnail_url || '/placeholder-thumb.png'"
             :alt="video.title"
-            class="w-32 h-20 object-cover rounded bg-gray-700 flex-shrink-0"
+            class="w-32 h-20 object-cover rounded avatar-bg flex-shrink-0"
           >
           <div class="flex-1 min-w-0">
             <p class="font-medium truncate">{{ video.title }}</p>
-            <p class="text-sm text-gray-400">{{ video.person_name || 'No person' }} | {{ video.status || 'draft' }}</p>
+            <p class="text-sm meta-text">{{ video.person_name || 'No person' }} | {{ video.status || 'draft' }}</p>
           </div>
           <div class="flex gap-2 flex-shrink-0">
             <router-link
               :to="`/admin/videos/${video.id}`"
-              class="px-3 py-1.5 text-sm rounded bg-gray-700 hover:bg-gray-600 transition-colors"
+              class="neutral-btn px-3 py-1.5 text-sm rounded transition-colors"
             >
               Edit
             </router-link>
             <button
-              class="px-3 py-1.5 text-sm rounded bg-red-700 hover:bg-red-600 transition-colors"
+              class="danger-btn px-3 py-1.5 text-sm rounded transition-colors"
               @click="handleDelete(video.id)"
             >
               Delete
@@ -85,3 +85,54 @@ async function handleDelete(id) {
 
 onMounted(load)
 </script>
+
+<style scoped>
+.page-root {
+  background-color: var(--bg-color);
+  color: var(--primary-text-color);
+}
+
+.spinner {
+  border-color: var(--primary-color);
+}
+
+.meta-text {
+  color: var(--secondary-text-color);
+}
+
+.row-card {
+  background-color: var(--card-bg-color);
+  border: 1px solid color-mix(in srgb, var(--primary-text-color) 12%, transparent);
+}
+
+.avatar-bg {
+  background-color: var(--secondary-card-bg-color);
+}
+
+.primary-btn {
+  background-color: var(--primary-color);
+  color: var(--text-with-main-color);
+}
+
+.primary-btn:hover {
+  background-color: var(--primary-color-hover);
+}
+
+.neutral-btn {
+  background-color: var(--secondary-card-bg-color);
+  color: var(--primary-text-color);
+}
+
+.neutral-btn:hover {
+  background-color: color-mix(in srgb, var(--primary-text-color) 12%, var(--secondary-card-bg-color));
+}
+
+.danger-btn {
+  background-color: var(--destructive-color);
+  color: var(--destructive-text-color);
+}
+
+.danger-btn:hover {
+  background-color: var(--destructive-hover-color);
+}
+</style>

@@ -1,25 +1,25 @@
 <template>
-  <div class="min-h-screen bg-gray-950 text-white">
+  <div class="min-h-screen page-root">
     <div class="max-w-4xl mx-auto px-4 py-8">
       <h1 class="text-2xl font-bold mb-8">Admin Dashboard</h1>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <router-link
           to="/admin/videos"
-          class="block p-6 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors"
+          class="admin-card block p-6 rounded-lg transition-colors"
         >
           <h2 class="text-lg font-semibold mb-2">Manage Videos</h2>
-          <p class="text-gray-400 text-sm">Add, edit, and delete videos</p>
-          <p v-if="videoCount !== null" class="mt-3 text-2xl font-bold text-blue-400">{{ videoCount }}</p>
+          <p class="meta-text text-sm">Add, edit, and delete videos</p>
+          <p v-if="videoCount !== null" class="count-stat mt-3 text-2xl font-bold">{{ videoCount }}</p>
         </router-link>
 
         <router-link
           to="/admin/persons"
-          class="block p-6 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors"
+          class="admin-card block p-6 rounded-lg transition-colors"
         >
           <h2 class="text-lg font-semibold mb-2">Manage Persons</h2>
-          <p class="text-gray-400 text-sm">Add, edit, and delete persons</p>
-          <p v-if="personCount !== null" class="mt-3 text-2xl font-bold text-green-400">{{ personCount }}</p>
+          <p class="meta-text text-sm">Add, edit, and delete persons</p>
+          <p v-if="personCount !== null" class="count-stat mt-3 text-2xl font-bold">{{ personCount }}</p>
         </router-link>
       </div>
     </div>
@@ -43,3 +43,27 @@ onMounted(async () => {
   }
 })
 </script>
+
+<style scoped>
+.page-root {
+  background-color: var(--bg-color);
+  color: var(--primary-text-color);
+}
+
+.meta-text {
+  color: var(--secondary-text-color);
+}
+
+.admin-card {
+  background-color: var(--card-bg-color);
+  border: 1px solid color-mix(in srgb, var(--primary-text-color) 12%, transparent);
+}
+
+.admin-card:hover {
+  background-color: var(--secondary-card-bg-color);
+}
+
+.count-stat {
+  color: var(--primary-color);
+}
+</style>
