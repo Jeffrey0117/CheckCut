@@ -544,11 +544,14 @@ export function getVideoByIdRaw(id) {
 
 export function getVideoById(id) {
   const database = getDatabase()
+  // Public detail: only published videos. Private (embed-only) videos must NOT
+  // be viewable on CheckCut's own site — they 404 here. Embed/stream use
+  // getVideoByIdRaw so authorized embedding still works.
   const video = database.prepare(`
     SELECT v.*, p.name as person_name, p.slug as person_slug, p.avatar as person_avatar
     FROM videos v
     LEFT JOIN persons p ON v.person_id = p.id
-    WHERE v.id = ?
+    WHERE v.id = ? AND v.status = 'published'
   `).get(id)
 
   if (video) {

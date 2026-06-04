@@ -54,6 +54,11 @@ router.post('/', requireApiKey, upload.single('file'), async (req, res) => {
     const title = (req.body?.title || originalname || 'Untitled').toString().slice(0, 300)
     const description = (req.body?.description || '').toString()
 
+    // visibility: 'private' = embed-only (hidden from CheckCut's public site,
+    // only playable when embedded from an allowed origin). Default public.
+    const visibility = (req.body?.visibility || '').toString().toLowerCase()
+    const status = (visibility === 'private' || visibility === 'embed_only') ? 'private' : 'published'
+
     const video = createVideo({
       title,
       description,
@@ -61,7 +66,7 @@ router.post('/', requireApiKey, upload.single('file'), async (req, res) => {
       thumbnail_url: pokkit.thumbUrl,
       duration: 0,
       source_url: '',
-      status: 'published',
+      status,
     })
 
     // 3. Return consumer-friendly URLs.
