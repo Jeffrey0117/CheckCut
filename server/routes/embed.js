@@ -74,6 +74,11 @@ router.get('/:videoId', (req, res) => {
     const frameAncestors = ["'self'", ...allowedOrigins].join(' ')
     res.setHeader('Content-Security-Policy', `frame-ancestors ${frameAncestors}`)
     res.removeHeader('X-Frame-Options')
+    // Override helmet's global `Referrer-Policy: no-referrer`. The <video> source
+    // is same-origin (this embed page → /api/v1/stream), and the stream's hotlink
+    // protection needs a Referer to allow it. `same-origin` keeps the Referer on
+    // same-origin requests while still hiding it from cross-origin ones.
+    res.setHeader('Referrer-Policy', 'same-origin')
     res.type('html').send(html)
   } catch (error) {
     console.error('[EMBED]', error.message)
