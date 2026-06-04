@@ -10,7 +10,7 @@
       @click="sidebarOpen = false"
     ></div>
 
-    <!-- Main content -->
+    <!-- Main content (.app is display:block, so this block fills width; ml-56 clears the fixed sidebar) -->
     <main class="lg:ml-56 pt-0">
       <router-view v-slot="{ Component }">
         <transition mode="out-in" name="fade">
