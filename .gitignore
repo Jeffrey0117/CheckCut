@@ -6,3 +6,4 @@ client/dist/
 .pm2-ecosystem.json
 .claude/
 nul
+.env
