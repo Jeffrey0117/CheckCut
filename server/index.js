@@ -17,7 +17,9 @@ import favoritesRoutes from './routes/favorites.js'
 import embedRoutes from './routes/embed.js'
 import { createUser, getUserByUsername } from './services/database.js'
 
-dotenv.config()
+// override:true so the project's .env is authoritative over any stale env
+// captured in the pm2 ecosystem at a previous deploy (e.g. POKKIT_BASE_URL).
+dotenv.config({ override: true })
 
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
