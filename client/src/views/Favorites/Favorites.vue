@@ -1,10 +1,13 @@
 <template>
   <div class="min-h-screen page-root">
     <div class="max-w-7xl mx-auto px-4 py-8">
-      <h1 class="text-2xl font-bold mb-6">Favorites</h1>
+      <h1 class="text-2xl font-bold mb-6 flex items-center gap-2">
+        <font-awesome-icon :icon="['fas', 'heart']" />
+        收藏
+      </h1>
 
       <div v-if="favorites.length === 0" class="text-center py-12 meta-text">
-        No favorites yet. Start watching and add videos to your favorites.
+        還沒有收藏。開始觀看並把喜歡的影片加入收藏吧。
       </div>
 
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

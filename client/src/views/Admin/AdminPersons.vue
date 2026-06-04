@@ -2,12 +2,13 @@
   <div class="min-h-screen page-root">
     <div class="max-w-6xl mx-auto px-4 py-8">
       <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-bold">Manage Persons</h1>
+        <h1 class="text-2xl font-bold">人物管理</h1>
         <router-link
           to="/admin/persons/new"
-          class="primary-btn px-4 py-2 rounded-lg transition-colors"
+          class="primary-btn px-4 py-2 rounded-lg transition-colors inline-flex items-center gap-2"
         >
-          + New Person
+          <font-awesome-icon :icon="['fas', 'plus']" />
+          新增人物
         </router-link>
       </div>
 
@@ -16,7 +17,7 @@
       </div>
 
       <div v-else-if="persons.length === 0" class="text-center py-12 meta-text">
-        No persons yet.
+        目前還沒有人物。
       </div>
 
       <div v-else class="space-y-3">
@@ -37,15 +38,17 @@
           <div class="flex gap-2 flex-shrink-0">
             <router-link
               :to="`/admin/persons/${person.id}`"
-              class="neutral-btn px-3 py-1.5 text-sm rounded transition-colors"
+              class="neutral-btn px-3 py-1.5 text-sm rounded transition-colors inline-flex items-center gap-1.5"
             >
-              Edit
+              <font-awesome-icon :icon="['fas', 'pen']" />
+              編輯
             </router-link>
             <button
-              class="danger-btn px-3 py-1.5 text-sm rounded transition-colors"
+              class="danger-btn px-3 py-1.5 text-sm rounded transition-colors inline-flex items-center gap-1.5"
               @click="handleDelete(person.id)"
             >
-              Delete
+              <font-awesome-icon :icon="['fas', 'trash']" />
+              刪除
             </button>
           </div>
         </div>
@@ -74,12 +77,12 @@ async function load() {
 }
 
 async function handleDelete(id) {
-  if (!confirm('Delete this person?')) return
+  if (!confirm('確定要刪除這位人物嗎?')) return
   try {
     await deletePerson(id)
     persons.value = persons.value.filter((p) => p.id !== id)
   } catch (err) {
-    alert('Failed to delete: ' + err.message)
+    alert('刪除失敗:' + err.message)
   }
 }
 

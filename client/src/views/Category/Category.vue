@@ -8,7 +8,7 @@
       </div>
 
       <div v-else-if="videos.length === 0" class="text-center py-12 meta-text">
-        No videos in this category.
+        這個分類目前沒有影片。
       </div>
 
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">

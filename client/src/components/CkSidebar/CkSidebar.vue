@@ -4,7 +4,7 @@
     :class="open ? 'translate-x-0' : '-translate-x-full'"
   >
     <nav class="ck-sidebar__nav">
-      <p class="ck-sidebar__section-label">Menu</p>
+      <p class="ck-sidebar__section-label">選單</p>
 
       <router-link
         v-for="item in navItems"
@@ -14,21 +14,25 @@
         active-class="ck-sidebar__item--active"
         @click="$emit('close')"
       >
-        <span class="ck-sidebar__icon" v-html="item.icon"></span>
+        <span class="ck-sidebar__icon">
+          <font-awesome-icon :icon="item.icon" />
+        </span>
         <span class="ck-sidebar__label">{{ item.label }}</span>
       </router-link>
 
       <template v-if="isAdmin">
         <hr class="ck-sidebar__divider">
-        <p class="ck-sidebar__section-label">Manage</p>
+        <p class="ck-sidebar__section-label">管理</p>
         <router-link
           to="/admin"
           class="ck-sidebar__item"
           active-class="ck-sidebar__item--active"
           @click="$emit('close')"
         >
-          <span class="ck-sidebar__icon">&#9881;</span>
-          <span class="ck-sidebar__label">Admin</span>
+          <span class="ck-sidebar__icon">
+            <font-awesome-icon :icon="['fas', 'gear']" />
+          </span>
+          <span class="ck-sidebar__label">管理後台</span>
         </router-link>
       </template>
     </nav>
@@ -49,10 +53,10 @@ const store = useStore()
 const isAdmin = computed(() => store.getters['user/getIsAdmin'])
 
 const navItems = [
-  { to: '/', label: 'Home', icon: '&#127968;' },
-  { to: '/search', label: 'Search', icon: '&#128269;' },
-  { to: '/favorites', label: 'Favorites', icon: '&#9829;' },
-  { to: '/history', label: 'History', icon: '&#128337;' },
+  { to: '/', label: '首頁', icon: ['fas', 'house'] },
+  { to: '/search', label: '搜尋', icon: ['fas', 'magnifying-glass'] },
+  { to: '/favorites', label: '收藏', icon: ['fas', 'heart'] },
+  { to: '/history', label: '觀看紀錄', icon: ['fas', 'clock-rotate-left'] },
 ]
 </script>
 

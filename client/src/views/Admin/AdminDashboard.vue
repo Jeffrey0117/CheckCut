@@ -1,15 +1,15 @@
 <template>
   <div class="min-h-screen page-root">
     <div class="max-w-4xl mx-auto px-4 py-8">
-      <h1 class="text-2xl font-bold mb-8">Admin Dashboard</h1>
+      <h1 class="text-2xl font-bold mb-8">管理後台</h1>
 
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
         <router-link
           to="/admin/videos"
           class="admin-card block p-6 rounded-lg transition-colors"
         >
-          <h2 class="text-lg font-semibold mb-2">Manage Videos</h2>
-          <p class="meta-text text-sm">Add, edit, and delete videos</p>
+          <h2 class="text-lg font-semibold mb-2">影片管理</h2>
+          <p class="meta-text text-sm">新增、編輯與刪除影片</p>
           <p v-if="videoCount !== null" class="count-stat mt-3 text-2xl font-bold">{{ videoCount }}</p>
         </router-link>
 
@@ -17,8 +17,8 @@
           to="/admin/persons"
           class="admin-card block p-6 rounded-lg transition-colors"
         >
-          <h2 class="text-lg font-semibold mb-2">Manage Persons</h2>
-          <p class="meta-text text-sm">Add, edit, and delete persons</p>
+          <h2 class="text-lg font-semibold mb-2">人物管理</h2>
+          <p class="meta-text text-sm">新增、編輯與刪除人物</p>
           <p v-if="personCount !== null" class="count-stat mt-3 text-2xl font-bold">{{ personCount }}</p>
         </router-link>
       </div>

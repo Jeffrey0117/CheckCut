@@ -1,11 +1,11 @@
 <template>
   <div class="min-h-screen page-root flex items-center justify-center">
     <div class="w-full max-w-md px-6">
-      <h1 class="text-2xl font-bold text-center mb-8">Login to CheckCut</h1>
+      <h1 class="text-2xl font-bold text-center mb-8">登入 CheckCut</h1>
 
       <form class="space-y-4" @submit.prevent="handleLogin">
         <div>
-          <label class="block text-sm field-label mb-1">Email</label>
+          <label class="block text-sm field-label mb-1">電子郵件</label>
           <input
             v-model="email"
             type="email"
@@ -15,13 +15,13 @@
           >
         </div>
         <div>
-          <label class="block text-sm field-label mb-1">Password</label>
+          <label class="block text-sm field-label mb-1">密碼</label>
           <input
             v-model="password"
             type="password"
             required
             class="themed-input w-full px-4 py-3 rounded-lg focus:outline-none"
-            placeholder="Your password"
+            placeholder="請輸入密碼"
           >
         </div>
 
@@ -32,13 +32,13 @@
           :disabled="loading"
           class="primary-btn w-full py-3 rounded-lg font-medium transition-colors disabled:opacity-50"
         >
-          {{ loading ? 'Logging in...' : 'Login' }}
+          {{ loading ? '登入中…' : '登入' }}
         </button>
       </form>
 
       <p class="mt-6 text-center meta-text text-sm">
-        Don't have an account?
-        <router-link to="/register" class="accent-link">Register</router-link>
+        還沒有帳號?
+        <router-link to="/register" class="accent-link">註冊</router-link>
       </p>
     </div>
   </div>

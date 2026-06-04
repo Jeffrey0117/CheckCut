@@ -3,7 +3,7 @@
     <div class="max-w-7xl mx-auto px-4 py-8">
       <!-- Featured Persons -->
       <section v-if="persons.length > 0" class="mb-12">
-        <h2 class="section-title text-xl font-semibold mb-4">Featured Persons</h2>
+        <h2 class="section-title text-xl font-semibold mb-4">精選創作者</h2>
         <div class="flex gap-4 overflow-x-auto pb-4 scrollbar-thin">
           <router-link
             v-for="person in persons"
@@ -37,12 +37,12 @@
 
       <!-- Latest Videos -->
       <section>
-        <h2 class="section-title text-xl font-semibold mb-4">Latest Videos</h2>
+        <h2 class="section-title text-xl font-semibold mb-4">最新影片</h2>
         <div v-if="loading" class="flex justify-center py-12">
           <div class="spinner animate-spin rounded-full h-8 w-8"></div>
         </div>
         <div v-else-if="videos.length === 0" class="empty-state text-center py-12">
-          No videos yet.
+          目前還沒有影片。
         </div>
         <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           <VideoCard v-for="video in videos" :key="video.id" :video="video" />

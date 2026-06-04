@@ -2,12 +2,13 @@
   <div class="min-h-screen page-root">
     <div class="max-w-6xl mx-auto px-4 py-8">
       <div class="flex items-center justify-between mb-6">
-        <h1 class="text-2xl font-bold">Manage Videos</h1>
+        <h1 class="text-2xl font-bold">影片管理</h1>
         <router-link
           to="/admin/videos/new"
-          class="primary-btn px-4 py-2 rounded-lg transition-colors"
+          class="primary-btn px-4 py-2 rounded-lg transition-colors inline-flex items-center gap-2"
         >
-          + New Video
+          <font-awesome-icon :icon="['fas', 'plus']" />
+          新增影片
         </router-link>
       </div>
 
@@ -16,7 +17,7 @@
       </div>
 
       <div v-else-if="videos.length === 0" class="text-center py-12 meta-text">
-        No videos yet. Create your first video.
+        目前還沒有影片。建立你的第一支影片吧。
       </div>
 
       <div v-else class="space-y-3">
@@ -32,20 +33,22 @@
           >
           <div class="flex-1 min-w-0">
             <p class="font-medium truncate">{{ video.title }}</p>
-            <p class="text-sm meta-text">{{ video.person_name || 'No person' }} | {{ video.status || 'draft' }}</p>
+            <p class="text-sm meta-text">{{ video.person_name || '未指定人物' }} | {{ statusLabel(video.status) }}</p>
           </div>
           <div class="flex gap-2 flex-shrink-0">
             <router-link
               :to="`/admin/videos/${video.id}`"
-              class="neutral-btn px-3 py-1.5 text-sm rounded transition-colors"
+              class="neutral-btn px-3 py-1.5 text-sm rounded transition-colors inline-flex items-center gap-1.5"
             >
-              Edit
+              <font-awesome-icon :icon="['fas', 'pen']" />
+              編輯
             </router-link>
             <button
-              class="danger-btn px-3 py-1.5 text-sm rounded transition-colors"
+              class="danger-btn px-3 py-1.5 text-sm rounded transition-colors inline-flex items-center gap-1.5"
               @click="handleDelete(video.id)"
             >
-              Delete
+              <font-awesome-icon :icon="['fas', 'trash']" />
+              刪除
             </button>
           </div>
         </div>
@@ -61,6 +64,16 @@ import { getVideos, deleteVideo } from '../../helpers/api/local.js'
 const videos = ref([])
 const loading = ref(true)
 
+const STATUS_LABELS = {
+  draft: '草稿',
+  published: '已發布',
+  unlisted: '不公開',
+}
+
+function statusLabel(status) {
+  return STATUS_LABELS[status] || STATUS_LABELS.draft
+}
+
 async function load() {
   loading.value = true
   try {
@@ -74,12 +87,12 @@ async function load() {
 }
 
 async function handleDelete(id) {
-  if (!confirm('Delete this video?')) return
+  if (!confirm('確定要刪除這支影片嗎?')) return
   try {
     await deleteVideo(id)
     videos.value = videos.value.filter((v) => v.id !== id)
   } catch (err) {
-    alert('Failed to delete: ' + err.message)
+    alert('刪除失敗:' + err.message)
   }
 }
 

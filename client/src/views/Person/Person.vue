@@ -5,7 +5,7 @@
     </div>
 
     <div v-else-if="!person" class="text-center py-24 meta-text">
-      Person not found.
+      找不到這位創作者。
     </div>
 
     <div v-else class="max-w-7xl mx-auto px-4 py-8">
@@ -23,9 +23,9 @@
       </div>
 
       <!-- Person's Videos -->
-      <h2 class="text-xl font-semibold mb-4">Videos</h2>
+      <h2 class="text-xl font-semibold mb-4">影片</h2>
       <div v-if="videos.length === 0" class="meta-text">
-        No videos yet.
+        目前還沒有影片。
       </div>
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         <VideoCard v-for="video in videos" :key="video.id" :video="video" />
@@ -34,7 +34,7 @@
       <!-- SeedBlog Articles -->
       <div v-if="person.seedblog_author_id" class="mt-12">
         <div class="flex items-center justify-between mb-4">
-          <h2 class="text-xl font-semibold">Articles</h2>
+          <h2 class="text-xl font-semibold">文章</h2>
           <a
             v-if="seedblogBaseUrl"
             :href="`${seedblogBaseUrl}/author/${person.seedblog_author_id}`"
@@ -42,7 +42,7 @@
             rel="noopener noreferrer"
             class="text-sm accent-link"
           >
-            View all &rarr;
+            查看全部 &rarr;
           </a>
         </div>
 
@@ -51,7 +51,7 @@
         </div>
 
         <div v-else-if="articles.length === 0" class="meta-text">
-          No articles published yet.
+          目前還沒有發布文章。
         </div>
 
         <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">

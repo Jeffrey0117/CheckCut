@@ -1,21 +1,21 @@
 <template>
   <div class="min-h-screen page-root flex items-center justify-center">
     <div class="w-full max-w-md px-6">
-      <h1 class="text-2xl font-bold text-center mb-8">Create Account</h1>
+      <h1 class="text-2xl font-bold text-center mb-8">建立帳號</h1>
 
       <form class="space-y-4" @submit.prevent="handleRegister">
         <div>
-          <label class="block text-sm field-label mb-1">Name</label>
+          <label class="block text-sm field-label mb-1">姓名</label>
           <input
             v-model="name"
             type="text"
             required
             class="themed-input w-full px-4 py-3 rounded-lg focus:outline-none"
-            placeholder="Your name"
+            placeholder="請輸入姓名"
           >
         </div>
         <div>
-          <label class="block text-sm field-label mb-1">Email</label>
+          <label class="block text-sm field-label mb-1">電子郵件</label>
           <input
             v-model="email"
             type="email"
@@ -25,14 +25,14 @@
           >
         </div>
         <div>
-          <label class="block text-sm field-label mb-1">Password</label>
+          <label class="block text-sm field-label mb-1">密碼</label>
           <input
             v-model="password"
             type="password"
             required
             minlength="6"
             class="themed-input w-full px-4 py-3 rounded-lg focus:outline-none"
-            placeholder="At least 6 characters"
+            placeholder="至少 6 個字元"
           >
         </div>
 
@@ -43,13 +43,13 @@
           :disabled="loading"
           class="primary-btn w-full py-3 rounded-lg font-medium transition-colors disabled:opacity-50"
         >
-          {{ loading ? 'Creating account...' : 'Register' }}
+          {{ loading ? '建立帳號中…' : '註冊' }}
         </button>
       </form>
 
       <p class="mt-6 text-center meta-text text-sm">
-        Already have an account?
-        <router-link to="/login" class="accent-link">Login</router-link>
+        已經有帳號?
+        <router-link to="/login" class="accent-link">登入</router-link>
       </p>
     </div>
   </div>

@@ -1,69 +1,69 @@
 <template>
   <div class="min-h-screen page-root">
     <div class="max-w-3xl mx-auto px-4 py-8">
-      <h1 class="text-2xl font-bold mb-6">{{ isEdit ? 'Edit Video' : 'New Video' }}</h1>
+      <h1 class="text-2xl font-bold mb-6">{{ isEdit ? '編輯影片' : '新增影片' }}</h1>
 
       <form class="space-y-4" @submit.prevent="handleSubmit">
         <div>
-          <label class="block text-sm field-label mb-1">Title *</label>
+          <label class="block text-sm field-label mb-1">標題 *</label>
           <input v-model="form.title" type="text" required class="themed-input w-full px-4 py-2 rounded-lg focus:outline-none">
         </div>
 
         <div>
-          <label class="block text-sm field-label mb-1">Description</label>
+          <label class="block text-sm field-label mb-1">說明</label>
           <textarea v-model="form.description" rows="3" class="themed-input w-full px-4 py-2 rounded-lg focus:outline-none"></textarea>
         </div>
 
         <div>
-          <label class="block text-sm field-label mb-1">Pokkit URL *</label>
+          <label class="block text-sm field-label mb-1">Pokkit 網址 *</label>
           <input v-model="form.pokkit_url" type="url" required class="themed-input w-full px-4 py-2 rounded-lg focus:outline-none" placeholder="https://pokkit.example.com/files/...">
         </div>
 
         <div>
-          <label class="block text-sm field-label mb-1">Thumbnail URL</label>
+          <label class="block text-sm field-label mb-1">縮圖網址</label>
           <input v-model="form.thumbnail_url" type="url" class="themed-input w-full px-4 py-2 rounded-lg focus:outline-none">
         </div>
 
         <div class="grid grid-cols-2 gap-4">
           <div>
-            <label class="block text-sm field-label mb-1">Duration (seconds)</label>
+            <label class="block text-sm field-label mb-1">時長 (秒)</label>
             <input v-model.number="form.duration" type="number" min="0" class="themed-input w-full px-4 py-2 rounded-lg focus:outline-none">
           </div>
           <div>
-            <label class="block text-sm field-label mb-1">Sort Order</label>
+            <label class="block text-sm field-label mb-1">排序順序</label>
             <input v-model.number="form.sort_order" type="number" class="themed-input w-full px-4 py-2 rounded-lg focus:outline-none">
           </div>
         </div>
 
         <div>
-          <label class="block text-sm field-label mb-1">Person</label>
+          <label class="block text-sm field-label mb-1">人物</label>
           <select v-model="form.person_id" class="themed-input w-full px-4 py-2 rounded-lg focus:outline-none">
-            <option value="">-- None --</option>
+            <option value="">-- 不指定 --</option>
             <option v-for="p in persons" :key="p.id" :value="p.id">{{ p.name }}</option>
           </select>
         </div>
 
         <div>
-          <label class="block text-sm field-label mb-1">Category</label>
+          <label class="block text-sm field-label mb-1">分類</label>
           <input v-model="form.category" type="text" class="themed-input w-full px-4 py-2 rounded-lg focus:outline-none">
         </div>
 
         <div>
-          <label class="block text-sm field-label mb-1">Tags (comma separated)</label>
+          <label class="block text-sm field-label mb-1">標籤 (以逗號分隔)</label>
           <input v-model="form.tags" type="text" class="themed-input w-full px-4 py-2 rounded-lg focus:outline-none" placeholder="tag1, tag2, tag3">
         </div>
 
         <div>
-          <label class="block text-sm field-label mb-1">Source URL</label>
+          <label class="block text-sm field-label mb-1">來源網址</label>
           <input v-model="form.source_url" type="url" class="themed-input w-full px-4 py-2 rounded-lg focus:outline-none">
         </div>
 
         <div>
-          <label class="block text-sm field-label mb-1">Status</label>
+          <label class="block text-sm field-label mb-1">狀態</label>
           <select v-model="form.status" class="themed-input w-full px-4 py-2 rounded-lg focus:outline-none">
-            <option value="draft">Draft</option>
-            <option value="published">Published</option>
-            <option value="unlisted">Unlisted</option>
+            <option value="draft">草稿</option>
+            <option value="published">已發布</option>
+            <option value="unlisted">不公開</option>
           </select>
         </div>
 
@@ -75,13 +75,13 @@
             :disabled="saving"
             class="primary-btn px-6 py-2 rounded-lg font-medium transition-colors disabled:opacity-50"
           >
-            {{ saving ? 'Saving...' : 'Save' }}
+            {{ saving ? '儲存中…' : '儲存' }}
           </button>
           <router-link
             to="/admin/videos"
             class="neutral-btn px-6 py-2 rounded-lg transition-colors"
           >
-            Cancel
+            取消
           </router-link>
         </div>
       </form>
@@ -143,7 +143,7 @@ onMounted(async () => {
         form.sort_order = v.sort_order || 0
       }
     } catch (err) {
-      error.value = 'Failed to load video: ' + err.message
+      error.value = '載入影片失敗:' + err.message
     }
   }
 })

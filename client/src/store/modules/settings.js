@@ -44,7 +44,7 @@ function saveTheme(theme) {
 // (used by index.html) in sync. Centralized so App.vue + toggle share it.
 // The brand main/sec color classes are appended so --primary-color (red
 // accent) and --accent-color resolve from themes.css alongside the base theme.
-export function applyTheme(theme, mainColor = 'Red', secColor = 'Blue') {
+export function applyTheme(theme, mainColor = 'Red', secColor = 'Red') {
   const normalized = theme === 'dark' ? 'dark' : 'light'
   document.body.className = `${normalized} main${mainColor} sec${secColor}`
   document.documentElement.setAttribute('data-ck-theme', normalized)
@@ -54,7 +54,7 @@ export function applyTheme(theme, mainColor = 'Red', secColor = 'Blue') {
 const state = {
   baseTheme: loadTheme(),
   mainColor: 'Red',
-  secColor: 'Blue',
+  secColor: 'Red',
   defaultVolume: 0.3,
   defaultPlayback: 1,
   defaultQuality: '720',

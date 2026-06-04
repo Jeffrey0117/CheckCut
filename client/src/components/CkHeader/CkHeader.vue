@@ -13,7 +13,7 @@
 
       <!-- Brand -->
       <router-link to="/" class="brand text-lg font-bold flex-shrink-0">
-        Check<span class="brand-accent">Cut</span>
+        雀可<span class="brand-accent">影片</span>
       </router-link>
 
       <!-- Search -->
@@ -22,7 +22,7 @@
           <input
             v-model="searchQuery"
             type="text"
-            placeholder="Search..."
+            placeholder="搜尋影片…"
             class="search-input w-full px-4 py-2 rounded-l-lg text-sm focus:outline-none"
           >
           <button
@@ -42,8 +42,8 @@
         <button
           type="button"
           class="icon-btn p-2 rounded-lg transition-colors"
-          :aria-label="isDark ? 'Switch to light theme' : 'Switch to dark theme'"
-          :title="isDark ? 'Switch to light theme' : 'Switch to dark theme'"
+          :aria-label="isDark ? '切換為淺色主題' : '切換為深色主題'"
+          :title="isDark ? '切換為淺色主題' : '切換為深色主題'"
           @click="toggleTheme"
         >
           <!-- Sun icon (shown in dark mode → click to go light) -->
@@ -72,7 +72,7 @@
             to="/admin"
             class="nav-link text-sm transition-colors"
           >
-            Admin
+            管理
           </router-link>
         </template>
         <template v-if="isLoggedIn">
@@ -80,7 +80,7 @@
             class="nav-link text-sm transition-colors"
             @click="handleLogout"
           >
-            Logout
+            登出
           </button>
         </template>
         <template v-else>
@@ -88,7 +88,7 @@
             to="/login"
             class="nav-link text-sm transition-colors"
           >
-            Login
+            登入
           </router-link>
         </template>
       </div>

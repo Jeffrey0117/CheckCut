@@ -3,13 +3,19 @@
     <div class="max-w-7xl mx-auto px-4 py-8">
       <!-- Search Input -->
       <div class="mb-8">
-        <input
-          v-model="query"
-          type="text"
-          placeholder="Search videos..."
-          class="themed-input w-full max-w-xl px-4 py-3 rounded-lg focus:outline-none"
-          @keydown.enter="doSearch"
-        >
+        <div class="search-wrap relative w-full max-w-xl">
+          <font-awesome-icon
+            :icon="['fas', 'magnifying-glass']"
+            class="search-icon absolute left-4 top-1/2 -translate-y-1/2"
+          />
+          <input
+            v-model="query"
+            type="text"
+            placeholder="搜尋影片…"
+            class="themed-input w-full pl-11 pr-4 py-3 rounded-lg focus:outline-none"
+            @keydown.enter="doSearch"
+          >
+        </div>
       </div>
 
       <div v-if="loading" class="flex justify-center py-12">
@@ -17,7 +23,7 @@
       </div>
 
       <div v-else-if="searched && results.length === 0" class="text-center py-12 meta-text">
-        No results found.
+        沒有結果
       </div>
 
       <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -86,6 +92,11 @@ watch(() => route.query.q, (newQ) => {
 
 .meta-text {
   color: var(--tertiary-text-color);
+}
+
+.search-icon {
+  color: var(--tertiary-text-color);
+  pointer-events: none;
 }
 
 .themed-input {

@@ -1,31 +1,31 @@
 <template>
   <div class="min-h-screen page-root">
     <div class="max-w-3xl mx-auto px-4 py-8">
-      <h1 class="text-2xl font-bold mb-6">{{ isEdit ? 'Edit Person' : 'New Person' }}</h1>
+      <h1 class="text-2xl font-bold mb-6">{{ isEdit ? '編輯人物' : '新增人物' }}</h1>
 
       <form class="space-y-4" @submit.prevent="handleSubmit">
         <div>
-          <label class="block text-sm field-label mb-1">Name *</label>
+          <label class="block text-sm field-label mb-1">姓名 *</label>
           <input v-model="form.name" type="text" required class="themed-input w-full px-4 py-2 rounded-lg focus:outline-none" @input="autoSlug">
         </div>
 
         <div>
-          <label class="block text-sm field-label mb-1">Slug</label>
-          <input v-model="form.slug" type="text" class="themed-input w-full px-4 py-2 rounded-lg focus:outline-none" placeholder="auto-generated-from-name">
+          <label class="block text-sm field-label mb-1">網址代稱 (Slug)</label>
+          <input v-model="form.slug" type="text" class="themed-input w-full px-4 py-2 rounded-lg focus:outline-none" placeholder="留空將依姓名自動產生">
         </div>
 
         <div>
-          <label class="block text-sm field-label mb-1">Avatar URL</label>
+          <label class="block text-sm field-label mb-1">頭像網址</label>
           <input v-model="form.avatar_url" type="url" class="themed-input w-full px-4 py-2 rounded-lg focus:outline-none">
         </div>
 
         <div>
-          <label class="block text-sm field-label mb-1">Bio</label>
+          <label class="block text-sm field-label mb-1">簡介</label>
           <textarea v-model="form.bio" rows="3" class="themed-input w-full px-4 py-2 rounded-lg focus:outline-none"></textarea>
         </div>
 
         <div>
-          <label class="block text-sm field-label mb-1">SeedBlog Author ID</label>
+          <label class="block text-sm field-label mb-1">SeedBlog 作者 ID</label>
           <input v-model="form.seedblog_author_id" type="text" class="themed-input w-full px-4 py-2 rounded-lg focus:outline-none">
         </div>
 
@@ -37,13 +37,13 @@
             :disabled="saving"
             class="primary-btn px-6 py-2 rounded-lg font-medium transition-colors disabled:opacity-50"
           >
-            {{ saving ? 'Saving...' : 'Save' }}
+            {{ saving ? '儲存中…' : '儲存' }}
           </button>
           <router-link
             to="/admin/persons"
             class="neutral-btn px-6 py-2 rounded-lg transition-colors"
           >
-            Cancel
+            取消
           </router-link>
         </div>
       </form>
@@ -98,7 +98,7 @@ onMounted(async () => {
         slugManuallyEdited.value = true
       }
     } catch (err) {
-      error.value = 'Failed to load person: ' + err.message
+      error.value = '載入人物失敗:' + err.message
     }
   }
 })
