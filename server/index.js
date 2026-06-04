@@ -33,6 +33,10 @@ app.use(helmet({
   contentSecurityPolicy: false,
   hsts: false,
   crossOriginOpenerPolicy: false,
+  // Default `no-referrer` strips the Referer that the stream's hotlink
+  // protection relies on, breaking playback in the SPA (watch page) and embed.
+  // `same-origin` keeps the Referer for same-origin media requests only.
+  referrerPolicy: { policy: 'same-origin' },
 }))
 
 // CORS configuration
