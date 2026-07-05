@@ -83,6 +83,12 @@ const router = createRouter({
       component: () => import('../views/Admin/AdminVideoEdit.vue'),
     },
     {
+      path: '/admin/studio',
+      name: 'adminStudio',
+      meta: { title: '影片工作室', requiresAuth: true },
+      component: () => import('../views/Studio/Studio.vue'),
+    },
+    {
       path: '/admin/persons',
       name: 'adminPersons',
       meta: { title: 'Manage Persons', requiresAuth: true },

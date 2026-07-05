@@ -34,6 +34,17 @@
           </span>
           <span class="ck-sidebar__label">管理後台</span>
         </router-link>
+        <router-link
+          to="/admin/studio"
+          class="ck-sidebar__item"
+          active-class="ck-sidebar__item--active"
+          @click="$emit('close')"
+        >
+          <span class="ck-sidebar__icon">
+            <font-awesome-icon :icon="['fas', 'clapperboard']" />
+          </span>
+          <span class="ck-sidebar__label">影片工作室</span>
+        </router-link>
       </template>
     </nav>
   </aside>
