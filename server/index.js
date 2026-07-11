@@ -21,6 +21,32 @@ import { createUser, getUserByUsername } from './services/database.js'
 // captured in the pm2 ecosystem at a previous deploy (e.g. POKKIT_BASE_URL).
 dotenv.config({ override: true })
 
+// PM2 daemon 的 PATH 是啟動時快照,常缺 winget 的 ffmpeg → yt-dlp 無法合流高畫質,
+// 靜默退到 360p premuxed(2026-07-11 蝦皮課實案)。啟動時補進 PATH,子程序繼承。
+;(async function ensureFfmpegInPath() {
+  const { execSync } = await import('node:child_process')
+  const fsSync = await import('node:fs')
+  try { execSync('ffmpeg -version', { stdio: 'ignore', windowsHide: true, timeout: 10000 }); return } catch {}
+  const candidates = []
+  if (process.env.FFMPEG_DIR) candidates.push(process.env.FFMPEG_DIR)
+  try {
+    const base = path.join(process.env.LOCALAPPDATA || '', 'Microsoft', 'WinGet', 'Packages')
+    for (const pkg of fsSync.readdirSync(base).filter((d) => d.startsWith('Gyan.FFmpeg'))) {
+      for (const inner of fsSync.readdirSync(path.join(base, pkg)).filter((d) => d.startsWith('ffmpeg-'))) {
+        candidates.push(path.join(base, pkg, inner, 'bin'))
+      }
+    }
+  } catch {}
+  for (const bin of candidates) {
+    if (fsSync.existsSync(path.join(bin, 'ffmpeg.exe')) || fsSync.existsSync(path.join(bin, 'ffmpeg'))) {
+      process.env.PATH = `${bin}${path.delimiter}${process.env.PATH || ''}`
+      console.log(`[checkcut] ffmpeg 不在 PATH,已自動補上: ${bin}`)
+      return
+    }
+  }
+  console.warn('[checkcut] ⚠️ 找不到 ffmpeg — YT 匯入將無法合流高畫質(會被高度驗證擋下)')
+})()
+
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
