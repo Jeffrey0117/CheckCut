@@ -9,7 +9,7 @@
  * completion, active imports are capped so a burst of teachers can't fork-bomb yt-dlp.
  */
 
-import { spawn } from 'node:child_process'
+import { spawn, execFileSync } from 'node:child_process'
 import { promises as fsp } from 'node:fs'
 import os from 'node:os'
 import path from 'node:path'
@@ -33,15 +33,20 @@ export function statusFromVisibility(v) {
 }
 
 /**
- * Download a YouTube video with yt-dlp (cap ~720p, mp4). Resolves to the temp
+ * Download a YouTube video with yt-dlp (cap ~1080p, mp4). Resolves to the temp
  * file path — caller is responsible for deleting it. Times out after 10 min.
+ *
+ * ⚠️ 格式 fallback 血淚(2026-07-11 蝦皮課實案):bestvideo+bestaudio 需要 ffmpeg 合流,
+ * PM2 環境 ffmpeg 常不在 PATH → yt-dlp 靜默退到唯一 premuxed mp4 = itag18(640×360),
+ * 整批課程糊到看不見字。所以:(1) 上限提到 1080;(2) fallback 不再掛 premuxed 360p,
+ * 抓完由呼叫端驗高度;(3) 部署端務必確保 ffmpeg 在 PATH(參考 pokkit ensureFfmpegInPath)。
  */
 export async function downloadYoutube(url) {
   const tmp = path.join(os.tmpdir(), `ytimport-${crypto.randomBytes(6).toString('hex')}.mp4`)
   const { bin, baseArgs } = ytDlpCmd()
   const args = [
     ...baseArgs,
-    '-f', 'bestvideo[height<=720][ext=mp4]+bestaudio[ext=m4a]/best[height<=720][ext=mp4]/best[ext=mp4]/best',
+    '-f', 'bestvideo[height<=1080][ext=mp4]+bestaudio[ext=m4a]/bestvideo[height<=1080]+bestaudio/best[height<=1080]',
     '--merge-output-format', 'mp4',
     '--no-playlist',
     '-o', tmp,
@@ -60,7 +65,30 @@ export async function downloadYoutube(url) {
     })
   })
 
+  // 抓完驗高度:<480p 直接大聲失敗(寧可匯入失敗,不要靜默收下 360p 垃圾)
+  const height = probeVideoHeight(tmp)
+  if (height > 0 && height < 480) {
+    await fsp.rm(tmp, { force: true }).catch(() => {})
+    throw new Error(`下載結果只有 ${height}p(可能 ffmpeg 不在 PATH 導致無法合流高畫質)——已中止匯入`)
+  }
+  if (height === 0) {
+    console.warn('[ytImport] ffprobe 不可用,略過畫質驗證(建議確保 ffmpeg/ffprobe 在 PATH)')
+  }
+
   return tmp
+}
+
+/** ffprobe 影片高度;probe 失敗回 0(不擋流程,只記警告) */
+function probeVideoHeight(file) {
+  try {
+    const out = execFileSync('ffprobe', [
+      '-v', 'error', '-select_streams', 'v:0',
+      '-show_entries', 'stream=height', '-of', 'csv=p=0', file,
+    ], { timeout: 60000, windowsHide: true }).toString().trim()
+    return parseInt(out, 10) || 0
+  } catch {
+    return 0
+  }
 }
 
 /**
